@@ -10,11 +10,11 @@
   margin: 60px 0 50px 0;
 }
 
-fieldset {
+.login_fieldset {
   border: none;
 }
 
-input {
+.login_input {
   background-color: black;
   border: none;
   border-bottom: 2px solid white;
@@ -25,7 +25,7 @@ input {
   color: white;
 }
 
-input::placeholder {
+.login_input::placeholder {
   color: #cccccc;
 }
 

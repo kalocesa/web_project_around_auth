@@ -5,9 +5,17 @@ export const Login = () => {
     <div className="login_container">
       <h1 className="login_title">Inicia sesión</h1>
       <form>
-        <fieldset>
-          <input type="email" placeholder="Correo electrónico" />
-          <input type="password" placeholder="Contraseña" />
+        <fieldset className="login_fieldset">
+          <input
+            className="login_input"
+            type="email"
+            placeholder="Correo electrónico"
+          />
+          <input
+            className="login_input"
+            type="password"
+            placeholder="Contraseña"
+          />
         </fieldset>
         <button className="login_button">Inicia sesión</button>
       </form>

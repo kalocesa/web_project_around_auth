@@ -5,9 +5,17 @@ export const Register = () => {
     <div className="register_container">
       <h1 className="register_title">Regístrate</h1>
       <form>
-        <fieldset>
-          <input type="email" placeholder="Correo electrónico" />
-          <input type="password" placeholder="Contraseña" />
+        <fieldset className="register_fieldset">
+          <input
+            className="register_input"
+            type="email"
+            placeholder="Correo electrónico"
+          />
+          <input
+            className="register_input"
+            type="password"
+            placeholder="Contraseña"
+          />
         </fieldset>
         <button className="register_button">Regístrate</button>
       </form>
