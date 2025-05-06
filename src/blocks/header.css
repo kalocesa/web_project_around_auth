@@ -3,6 +3,11 @@
   width: 100%;
   margin: auto;
 }
+.header_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
 .header__icon {
   max-width: 173px;
@@ -11,6 +16,12 @@
   margin-bottom: 31px;
   margin-top: 45px;
   object-fit: cover;
+}
+
+.header_signin {
+  font-size: 18px;
+  color: white;
+  text-decoration: none;
 }
 
 .header__line {
