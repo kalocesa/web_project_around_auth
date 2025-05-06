@@ -13,7 +13,7 @@ export const Login = () => {
       </form>
       <p className="login_text">
         ¿Aún no eres miembro? Regístrate{" "}
-        <Link to={"/signin"} className="login_link">
+        <Link to={"/signup"} className="login_link">
           aquí
         </Link>
       </p>
