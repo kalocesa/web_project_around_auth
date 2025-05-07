@@ -31,13 +31,34 @@ export const login = async (email, password) => {
       body: JSON.stringify({ email, password }),
     });
     if (!response.ok) {
-      const errorMessage = await response.text();
+      const errorMessage = await response.json();
       throw new Error(`Error ${response.status}: ${errorMessage}`);
     }
     const data = await response.json();
     console.log("Inicio de sesión exitoso;", data.token);
     localStorage.setItem("token", data.token);
     return data.token;
+  } catch (error) {
+    console.log("Error al iniciar sesión:", error.message);
+    throw error;
+  }
+};
+
+export const getUserInfo = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/me`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    if (!response.ok) {
+      const errorMessage = await response.json();
+      throw new Error(`Error ${response.status}: ${errorMessage}`);
+    }
+    const responseJson = await response.json();
+    return responseJson.data;
   } catch (error) {
     console.log("Error al iniciar sesión:", error.message);
     throw error;
