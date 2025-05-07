@@ -3,6 +3,7 @@ import Header from "./Header/Header";
 import Footer from "./Footer/Footer";
 import { Register } from "./Register/Register";
 import { Login } from "./Login/Login";
+import { InfoTooltip } from "./InfoTooltip/InfoTooltip";
 import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
 import {
   BrowserRouter,
@@ -15,6 +16,7 @@ import {
 import CurrentUserContext from "../contexts/CurrentUserContext";
 import { useState, useEffect } from "react";
 import { api } from "../utils/api";
+import closeIcon from "../images/closeIcon.svg";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
