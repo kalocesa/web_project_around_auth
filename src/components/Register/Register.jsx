@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-export const Register = () => {
+export const Register = ({ handleRegister }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Intentando registrar usuario con:", email, password);
+    handleRegister(email, password);
   };
 
   return (

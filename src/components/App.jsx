@@ -16,10 +16,29 @@ import {
 import CurrentUserContext from "../contexts/CurrentUserContext";
 import { useState, useEffect } from "react";
 import { api } from "../utils/api";
-import closeIcon from "../images/closeIcon.svg";
+import goodRegister from "../images/register-good.png";
+import badRegister from "../images/register-bad.png";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
+  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
+  const [tooltipInfo, setTooltipInfo] = useState({ img: "", text: "" });
+
+  const handleRegister = async (email, password) => {
+    try {
+      await api.register(email, password);
+      setTooltipInfo({
+        img: goodRegister,
+        text: "¡Correcto! Ya estás registrado.",
+      });
+    } catch (error) {
+      setTooltipInfo({
+        img: badRegister,
+        text: "Uy, algo salió mal. Por favor, inténtalo de nuevo.",
+      });
+    }
+    setIsTooltipOpen(true); // Mostrar el modal
+  };
 
   useEffect(() => {
     api.getProfileInfo().then((data) => {
@@ -44,9 +63,19 @@ function App() {
           <Routes>
             <Route path="/" element={<Main />} />
             <Route path="/signin" element={<Login />} />
-            <Route path="/signup" element={<Register />} />
+            <Route
+              path="/signup"
+              element={<Register handleRegister={handleRegister} />}
+            />
           </Routes>
           <Footer />
+          {isTooltipOpen && (
+            <InfoTooltip
+              img={tooltipInfo.img}
+              text={tooltipInfo.text}
+              handleClose={() => setIsTooltipOpen(false)}
+            />
+          )}
         </div>
       </CurrentUserContext.Provider>
     </BrowserRouter>
