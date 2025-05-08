@@ -31,7 +31,7 @@ export const login = async (email, password) => {
       body: JSON.stringify({ email, password }),
     });
     if (!response.ok) {
-      const errorMessage = await response.text();
+      const errorMessage = await response.json();
       throw new Error(`Error ${response.status}: ${errorMessage}`);
     }
     const data = await response.json();
