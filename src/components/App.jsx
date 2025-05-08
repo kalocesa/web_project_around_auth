@@ -16,6 +16,7 @@ import {
 import CurrentUserContext from "../contexts/CurrentUserContext";
 import { useState, useEffect } from "react";
 import { api } from "../utils/api";
+import * as auth from "../utils/auth";
 import goodRegister from "../images/register-good.png";
 import badRegister from "../images/register-bad.png";
 
@@ -23,21 +24,30 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [isTooltipOpen, setIsTooltipOpen] = useState(false);
   const [tooltipInfo, setTooltipInfo] = useState({ img: "", text: "" });
+  const navigate = useNavigate();
 
   const handleRegister = async (email, password) => {
     try {
-      await api.register(email, password);
-      setTooltipInfo({
-        img: goodRegister,
-        text: "¡Correcto! Ya estás registrado.",
-      });
+      const response = await auth.register(email, password);
+      if (response.status === 200 || response.status === 201) {
+        setTooltipInfo({
+          img: goodRegister,
+          text: "¡Correcto! Ya estás registrado.",
+        });
+        navigate("/signin");
+      } else {
+        setTooltipInfo({
+          img: badRegister,
+          text: "Uy, algo salió mal. Por favor, inténtalo de nuevo.",
+        });
+      }
     } catch (error) {
       setTooltipInfo({
         img: badRegister,
         text: "Uy, algo salió mal. Por favor, inténtalo de nuevo.",
       });
     }
-    setIsTooltipOpen(true); // Mostrar el modal
+    setIsTooltipOpen(true);
   };
 
   useEffect(() => {
@@ -54,31 +64,29 @@ function App() {
   };
 
   return (
-    <BrowserRouter>
-      <CurrentUserContext.Provider
-        value={{ currentUser, handleUpdateUser, setCurrentUser }}
-      >
-        <div className="page">
-          <Header />
-          <Routes>
-            <Route path="/" element={<Main />} />
-            <Route path="/signin" element={<Login />} />
-            <Route
-              path="/signup"
-              element={<Register handleRegister={handleRegister} />}
-            />
-          </Routes>
-          <Footer />
-          {isTooltipOpen && (
-            <InfoTooltip
-              img={tooltipInfo.img}
-              text={tooltipInfo.text}
-              handleClose={() => setIsTooltipOpen(false)}
-            />
-          )}
-        </div>
-      </CurrentUserContext.Provider>
-    </BrowserRouter>
+    <CurrentUserContext.Provider
+      value={{ currentUser, handleUpdateUser, setCurrentUser }}
+    >
+      <div className="page">
+        <Header />
+        <Routes>
+          <Route path="/" element={<Main />} />
+          <Route path="/signin" element={<Login />} />
+          <Route
+            path="/signup"
+            element={<Register handleRegister={handleRegister} />}
+          />
+        </Routes>
+        <Footer />
+        {isTooltipOpen && (
+          <InfoTooltip
+            img={tooltipInfo.img}
+            text={tooltipInfo.text}
+            handleClose={() => setIsTooltipOpen(false)}
+          />
+        )}
+      </div>
+    </CurrentUserContext.Provider>
   );
 }
 

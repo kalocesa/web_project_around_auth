@@ -5,19 +5,17 @@ export const register = async (email, password) => {
     const response = await fetch(`${BASE_URL}/signup`, {
       method: "POST",
       headers: {
-        Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, password }),
     });
-    if (!response.ok) {
-      throw new Error(`Error ${response.status}: ${response.statusText}`);
-    }
-    const data = await response.json();
-    return data;
+
+    const responseJson = await response.json();
+    console.log("Respuesta del json:", responseJson);
+    return { status: response.status, data: responseJson.data };
   } catch (error) {
     console.log("Error en el registro:", error);
-    throw error;
+    return { status: 500, data: null };
   }
 };
 
