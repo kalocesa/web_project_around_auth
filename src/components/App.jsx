@@ -50,6 +50,30 @@ function App() {
     setIsTooltipOpen(true);
   };
 
+  const handleLogin = async (email, password) => {
+    try {
+      const response = await auth.login(email, password);
+      if (response.status === 200 || response.status === 201) {
+        setTooltipInfo({
+          img: goodRegister,
+          text: "¡Correcto! Ya estás registrado.",
+        });
+        navigate("/");
+      } else {
+        setTooltipInfo({
+          img: badRegister,
+          text: "Uy, algo salió mal. Por favor, inténtalo de nuevo.",
+        });
+      }
+    } catch (error) {
+      setTooltipInfo({
+        img: badRegister,
+        text: "Uy, algo salió mal. Por favor, inténtalo de nuevo.",
+      });
+    }
+    setIsTooltipOpen(true);
+  };
+
   useEffect(() => {
     api.getProfileInfo().then((data) => {
       setCurrentUser(data);
@@ -71,7 +95,7 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Main />} />
-          <Route path="/signin" element={<Login />} />
+          <Route path="/signin" element={<Login handleLogin={handleLogin} />} />
           <Route
             path="/signup"
             element={<Register handleRegister={handleRegister} />}

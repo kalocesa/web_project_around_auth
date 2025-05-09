@@ -2,7 +2,7 @@ import closeIcon from "../../images/closeIcon.svg";
 
 export const InfoTooltip = ({ img, text, handleClose }) => {
   return (
-    <div className="info_tooltip_popup">
+    <div className="info_tooltip_popup" onClick={handleClose}>
       <div className="info_tooltip_background"></div>
       <div className="info_tooltip">
         <button onClick={handleClose} className="info_tooltip_close">
