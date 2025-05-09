@@ -6,7 +6,6 @@ import { Login } from "./Login/Login";
 import { InfoTooltip } from "./InfoTooltip/InfoTooltip";
 import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
 import {
-  BrowserRouter,
   Routes,
   Route,
   Navigate,
@@ -19,11 +18,13 @@ import { api } from "../utils/api";
 import * as auth from "../utils/auth";
 import goodRegister from "../images/register-good.png";
 import badRegister from "../images/register-bad.png";
+import { getToken, setToken } from "../utils/token";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [isTooltipOpen, setIsTooltipOpen] = useState(false);
   const [tooltipInfo, setTooltipInfo] = useState({ img: "", text: "" });
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   const handleRegister = async (email, password) => {
@@ -52,12 +53,17 @@ function App() {
 
   const handleLogin = async (email, password) => {
     try {
-      const response = await auth.login(email, password);
-      if (response.status === 200 || response.status === 201) {
+      const data = await auth.login(email, password); // auth.login ya devuelve JSON
+
+      if (data.token) {
+        setToken(data.token);
+        console.log("Sesión iniciada correctamente, redirigiendo...");
+
         setTooltipInfo({
           img: goodRegister,
-          text: "¡Correcto! Ya estás registrado.",
+          text: "¡Correcto! Has iniciado sesión.",
         });
+        setIsLoggedIn(true);
         navigate("/");
       } else {
         setTooltipInfo({
@@ -70,6 +76,7 @@ function App() {
         img: badRegister,
         text: "Uy, algo salió mal. Por favor, inténtalo de nuevo.",
       });
+      console.error("Error al iniciar sesión:", error.message);
     }
     setIsTooltipOpen(true);
   };
@@ -94,11 +101,28 @@ function App() {
       <div className="page">
         <Header />
         <Routes>
-          <Route path="/" element={<Main />} />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute isLoggedIn={isLoggedIn}>
+                <Main />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/signin" element={<Login handleLogin={handleLogin} />} />
           <Route
             path="/signup"
             element={<Register handleRegister={handleRegister} />}
+          />
+          <Route
+            path="*"
+            element={
+              isLoggedIn ? (
+                <Navigate to="/" replace />
+              ) : (
+                <Navigate to="/signin" replace />
+              )
+            }
           />
         </Routes>
         <Footer />
