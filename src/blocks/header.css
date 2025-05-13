@@ -18,10 +18,22 @@
   object-fit: cover;
 }
 
+.header_container-profile {
+  display: flex;
+}
+
+.header_email {
+  color: white;
+  font-size: 18px;
+  margin-right: 30px;
+}
+
 .header_signin {
   font-size: 18px;
   color: white;
   text-decoration: none;
+  min-width: 120px;
+  text-align: center;
 }
 
 .header__line {

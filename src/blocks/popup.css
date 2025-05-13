@@ -2,18 +2,11 @@
   position: fixed;
   top: 0;
   left: 0;
-  /*visibility: hidden;
-  opacity: 0;*/
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   height: 100vh;
-}
-
-.popup_show {
-  visibility: visible;
-  opacity: 1;
 }
 
 .popup__background {

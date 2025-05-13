@@ -5,19 +5,15 @@ export const register = async (email, password) => {
     const response = await fetch(`${BASE_URL}/signup`, {
       method: "POST",
       headers: {
-        Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, password }),
     });
-    if (!response.ok) {
-      throw new Error(`Error ${response.status}: ${response.statusText}`);
-    }
-    const data = await response.json();
-    return data;
+    const responseJson = await response.json();
+    return { status: response.status, data: responseJson.data };
   } catch (error) {
     console.log("Error en el registro:", error);
-    throw error;
+    return { status: 500, data: null };
   }
 };
 
@@ -30,37 +26,44 @@ export const login = async (email, password) => {
       },
       body: JSON.stringify({ email, password }),
     });
+
     if (!response.ok) {
-      const errorMessage = await response.json();
+      let errorMessage = "Ocurrió un error inesperado";
+      if (response.status === 400) {
+        errorMessage = "No se ha proporcionado uno o más campos.";
+      } else if (response.status === 401) {
+        errorMessage =
+          "No se ha encontrado al usuario con el correo electrónico especificado.";
+      }
       throw new Error(`Error ${response.status}: ${errorMessage}`);
     }
+
     const data = await response.json();
-    console.log("Inicio de sesión exitoso;", data.token);
-    localStorage.setItem("token", data.token);
-    return data.token;
+    return data;
   } catch (error) {
-    console.log("Error al iniciar sesión:", error.message);
+    console.error("Error en la solicitud de login:", error.message);
     throw error;
   }
 };
 
-export const getUserInfo = async () => {
+export const checkToken = async (token) => {
   try {
     const response = await fetch(`${BASE_URL}/users/me`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${token}`,
       },
     });
     if (!response.ok) {
-      const errorMessage = await response.json();
-      throw new Error(`Error ${response.status}: ${errorMessage}`);
+      throw new Error(
+        `Error ${response.status}: Token inválido o formato incorrecto`
+      );
     }
-    const responseJson = await response.json();
-    return responseJson.data;
+    const data = await response.json();
+    return data;
   } catch (error) {
-    console.log("Error al iniciar sesión:", error.message);
+    console.error("Error al verificar el token:", error.message);
     throw error;
   }
 };
