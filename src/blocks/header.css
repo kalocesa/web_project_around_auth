@@ -1,0 +1,59 @@
+.header {
+  max-width: 880px;
+  width: 100%;
+  margin: auto;
+}
+.header_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header__icon {
+  max-width: 173px;
+  height: 60px;
+  width: 100%;
+  margin-bottom: 31px;
+  margin-top: 45px;
+  object-fit: cover;
+}
+
+.header_container-profile {
+  display: flex;
+}
+
+.header_email {
+  color: white;
+  font-size: 18px;
+  margin-right: 30px;
+}
+
+.header_signin {
+  font-size: 18px;
+  color: white;
+  text-decoration: none;
+  min-width: 120px;
+  text-align: center;
+}
+
+.header__line {
+  width: 100%;
+}
+
+@media screen and (max-width: 1024px) {
+  .header {
+    width: 90%;
+  }
+}
+
+@media screen and (max-width: 580px) {
+  .header__icon {
+    width: 126px;
+    margin-bottom: 0;
+  }
+
+  .header__line {
+    height: 1px;
+    border-radius: 10px;
+  }
+}
