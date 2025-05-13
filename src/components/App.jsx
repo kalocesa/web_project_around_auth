@@ -5,13 +5,7 @@ import { Register } from "./Register/Register";
 import { Login } from "./Login/Login";
 import { InfoTooltip } from "./InfoTooltip/InfoTooltip";
 import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
-import {
-  Routes,
-  Route,
-  Navigate,
-  useNavigate,
-  useLocation,
-} from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 import { useState, useEffect } from "react";
 import { api } from "../utils/api";
@@ -58,7 +52,6 @@ function App() {
 
       if (data.token) {
         setToken(data.token);
-        console.log("Sesión iniciada correctamente, redirigiendo...");
 
         setTooltipInfo({
           img: goodRegister,
@@ -96,6 +89,21 @@ function App() {
       setCurrentUser(newData);
     });
   };
+
+  useEffect(() => {
+    const jwt = getToken();
+    if (!jwt) {
+      return;
+    }
+    auth
+      .checkToken(jwt)
+      .then(() => {
+        setIsLoggedIn(true);
+        setUserEmail();
+        navigate("/");
+      })
+      .catch(console.error);
+  }, []);
 
   function handleLogout() {
     localStorage.removeItem("userEmail");

@@ -9,9 +9,7 @@ export const register = async (email, password) => {
       },
       body: JSON.stringify({ email, password }),
     });
-
     const responseJson = await response.json();
-    console.log("Respuesta del json:", responseJson);
     return { status: response.status, data: responseJson.data };
   } catch (error) {
     console.log("Error en el registro:", error);
@@ -41,7 +39,6 @@ export const login = async (email, password) => {
     }
 
     const data = await response.json();
-    console.log("Inicio de sesión exitoso:", data.token);
     return data;
   } catch (error) {
     console.error("Error en la solicitud de login:", error.message);
@@ -49,11 +46,7 @@ export const login = async (email, password) => {
   }
 };
 
-export const getToken = async () => {
-  const token = localStorage.getItem("token");
-  if (!token) {
-    throw new Error("token no encontrado");
-  }
+export const checkToken = async (token) => {
   try {
     const response = await fetch(`${BASE_URL}/users/me`, {
       method: "GET",
@@ -68,7 +61,7 @@ export const getToken = async () => {
       );
     }
     const data = await response.json();
-    return data.data.email;
+    return data;
   } catch (error) {
     console.error("Error al verificar el token:", error.message);
     throw error;
