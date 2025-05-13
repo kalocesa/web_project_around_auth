@@ -18,6 +18,17 @@
   object-fit: cover;
 }
 
+.header_container-profile {
+  display: flex;
+  width: 350px;
+  justify-content: space-between;
+}
+
+.header_email {
+  color: white;
+  font-size: 18px;
+}
+
 .header_signin {
   font-size: 18px;
   color: white;

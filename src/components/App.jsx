@@ -25,6 +25,7 @@ function App() {
   const [isTooltipOpen, setIsTooltipOpen] = useState(false);
   const [tooltipInfo, setTooltipInfo] = useState({ img: "", text: "" });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
   const navigate = useNavigate();
 
   const handleRegister = async (email, password) => {
@@ -64,6 +65,8 @@ function App() {
           text: "¡Correcto! Has iniciado sesión.",
         });
         setIsLoggedIn(true);
+        setUserEmail(email);
+        localStorage.setItem("userEmail", email);
         navigate("/");
       } else {
         setTooltipInfo({
@@ -94,12 +97,20 @@ function App() {
     });
   };
 
+  function handleLogout() {
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("jwt");
+    setIsLoggedIn(false);
+    setUserEmail("");
+    navigate("/signin", { replace: true });
+  }
+
   return (
     <CurrentUserContext.Provider
       value={{ currentUser, handleUpdateUser, setCurrentUser }}
     >
       <div className="page">
-        <Header />
+        <Header handleLogout={handleLogout} userEmail={userEmail} />
         <Routes>
           <Route
             path="/"
@@ -109,7 +120,12 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/signin" element={<Login handleLogin={handleLogin} />} />
+          <Route
+            path="/signin"
+            element={
+              <Login handleLogin={handleLogin} setUserEmail={setUserEmail} />
+            }
+          />
           <Route
             path="/signup"
             element={<Register handleRegister={handleRegister} />}
