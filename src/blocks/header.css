@@ -20,19 +20,20 @@
 
 .header_container-profile {
   display: flex;
-  width: 350px;
-  justify-content: space-between;
 }
 
 .header_email {
   color: white;
   font-size: 18px;
+  margin-right: 30px;
 }
 
 .header_signin {
   font-size: 18px;
   color: white;
   text-decoration: none;
+  min-width: 120px;
+  text-align: center;
 }
 
 .header__line {
