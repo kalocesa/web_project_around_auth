@@ -30,4 +30,4 @@ Para la construcción de "Around to MX", se utilizaron las siguientes tecnologí
 
 ## Autor
 
-Desarrollado por **Katia Sandoval**, como parte de su aprendizaje en **TripleTen**.
+Desarrollado por **Katia Sandoval**, como parte de mi aprendizaje en **TripleTen**.
