@@ -61,7 +61,8 @@ export const checkToken = async (token) => {
       );
     }
     const data = await response.json();
-    return data;
+    const userData = data.data;
+    return userData;
   } catch (error) {
     console.error("Error al verificar el token:", error.message);
     throw error;
